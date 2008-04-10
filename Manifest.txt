@@ -1,0 +1,6 @@
+History.txt
+README.txt
+License.txt
+Rakefile
+lib/rtask.rb
+setup.rb
