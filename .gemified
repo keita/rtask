@@ -3,7 +3,7 @@
 :has_rdoc: true
 :homepage: http://github.com/keita/rtask/tree/master
 :name: rtask
-:version: "1"
+:version: "3"
 :dependencies: 
 - gemify
 - rubyforge

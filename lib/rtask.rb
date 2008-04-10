@@ -24,7 +24,7 @@ require 'gemify'
 #   rake tgz           # Create the tgz package
 #
 class RTask
-  VERSION = "1"
+  VERSION = "3"
 
   attr_reader :project, :package, :version
 
@@ -84,34 +84,40 @@ class RTask
   # Task for release the package.
   def release
     desc 'Release new gem version'
-    task :release do
-      filename = "#{@package}-#{@version}"
-      gem = filename + ".gem"
-      tgz = filename + ".tgz"
-      if File.exist?(gem) and File.exist?(tgz)
-        @rubyforge.add_release @project, @package, @version, [gem, tgz]
-        puts "Released #{gem} and #{tgz}"
-      else
-        puts "Please make gem and tgz files first: rake gem tgz"
-        exit
-      end
+    task :release do real_release end
+  end
+
+  def real_release #:nodoc:
+    filename = "#{@package}-#{@version}"
+    gem = filename + ".gem"
+    tgz = filename + ".tgz"
+    if File.exist?(gem) and File.exist?(tgz)
+      @rubyforge.add_release @project, @package, @version, gem, tgz
+      puts "Released #{gem} and #{tgz}"
+    else
+      puts "Please make gem and tgz files first: rake gem tgz"
+      exit
     end
   end
 
   # Task for creating gem.
   def gem
     desc "Create the gem package"
-    task :gem do
-      sh "gemify -I"
-    end
+    task :gem do real_gem end
+  end
+
+  def real_gem #:nodoc:
+    sh "gemify -I"
   end
 
   # Task for creating tgz.
   def tgz
     desc "Create the tgz package"
-    task :tgz do
-      tgz = "#{@package}-#{@version}.tgz"
-      sh "tar -T Manifest.txt -c -z -f #{tgz}"
-    end
+    task :tgz do real_tgz end
+  end
+
+  def real_tgz #:nodoc:
+    tgz = "#{@package}-#{@version}.tgz"
+    sh "tar -T Manifest.txt -c -z -f #{tgz}"
   end
 end
