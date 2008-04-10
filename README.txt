@@ -12,6 +12,8 @@ See {the document}[http://github.com/keita/rtask/wikis].
 
 == Links
 
+* RTask
+  * {GitHub}[http://github.com/keita/rtask/tree/master]
 * {Gemify}[http://dojo.rubyforge.org/gemify/] : RTask is developed for using with Gemify.
 * author's blog(written in Japanese)
   * {¬¬日常日記}[http://d.hatena.ne.jp/keita_yamaguchi/]
