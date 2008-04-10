@@ -7,15 +7,28 @@ require 'gemify'
 #   % gemify
 #
 # Second, add RTask in your Rakefile:
+#   require 'rubygems'
 #   require 'rtask'
-#   RTask.new(:use => :all)
+#   RTask.new
+#
+# Result:
+#   % rake -T
+#   rake clean         # Remove any temporary products.
+#   rake clobber       # Remove any generated file.
+#   rake clobber_rdoc  # Remove rdoc products
+#   rake gem           # Create the gem package
+#   rake publish       # Upload API documentation
+#   rake rdoc          # Build the rdoc HTML Files
+#   rake release       # Release new gem version
+#   rake rerdoc        # Force a rebuild of the RDOC files
+#   rake tgz           # Create the tgz package
 #
 class RTask
   VERSION = "1"
 
   attr_reader :project, :package, :version
 
-  def initialize(config)
+  def initialize(config={:use => :all})
     @rubyforge = ::RubyForge.new
     @user = @rubyforge.userconfig
     @gemify = Gemify.new.instance_eval{@settings}
