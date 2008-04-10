@@ -3,22 +3,25 @@ require 'rubyforge'
 require 'gemify'
 
 # == Usage
-# Creates RTask in your Rakefile:
-#   RTask.new(:project => "rtask",
-#             :package => "rtask",
-#             :version => RTASK::VERSION,
-#             :use => :all)
+# First, you setup gemify.
+#   % gemify
+#
+# Second, add RTask in your Rakefile:
+#   require 'rtask'
+#   RTask.new(:use => :all)
+#
 class RTask
   VERSION = "1"
 
-  attr_accessor :project, :package, :version
+  attr_reader :project, :package, :version
 
   def initialize(config)
     @rubyforge = ::RubyForge.new
     @user = @rubyforge.userconfig
-    @project = config[:project]
-    @package = config[:package]
-    @version = config[:version]
+    @gemify = Gemify.new.instance_eval{@settings}
+    @project = @gemify[:rubyforge_project]
+    @package = @gemify[:name]
+    @version = @gemify[:version]
     if config.has_key?(:use)
       list = config[:use]
       list -= config[:exclude] if config[:exclude]
@@ -30,7 +33,7 @@ class RTask
   # Specifies to use tasks.
   def use(*names)
     if names[0] == :all
-      names = [:rdoc, :publish, :release, :gem, :tgz]
+      names = [:clean, :rdoc, :publish, :release, :gem, :tgz]
     end
     names.each do |name|
       send(name.to_sym)
