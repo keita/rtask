@@ -2,6 +2,6 @@ History.txt
 README.txt
 License.txt
 Rakefile
-bin/rtask.rb
+bin/rtask
 lib/rtask.rb
 setup.rb
