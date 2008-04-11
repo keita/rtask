@@ -24,7 +24,7 @@ require 'gemify'
 #   rake tgz           # Create the tgz package
 #
 class RTask
-  VERSION = "3"
+  VERSION = "005"
 
   attr_reader :project, :package, :version
 

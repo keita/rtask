@@ -1,12 +1,20 @@
-== 3: 2008-04-10
-* Keita Yamaguchi
+== 005: 2008-04-11
+* Keita Yamaguchi:
+  * Renamed bin/rtask.rb to bin/rtask
+
+== 004: 2008-04-11
+* Keita Yamaguchi:
+  * Fixed Manifest.txt
+
+== 003: 2008-04-10
+* Keita Yamaguchi:
   * Added bin/rtask
 
-== 2: 2008-04-10
-* Keita Yamaguchi
+== 002: 2008-04-10
+* Keita Yamaguchi:
   * Fixed some bugs
 
-== 1: 2008-04-10
+== 001: 2008-04-10
 
-* Keita Yamaguchi
+* Keita Yamaguchi:
   * Initial release
