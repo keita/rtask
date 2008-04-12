@@ -1,3 +1,7 @@
+== 006: 2008-04-12
+* Keita Yamaguchi:
+  * Added version checker
+
 == 005: 2008-04-11
 * Keita Yamaguchi:
   * Renamed bin/rtask.rb to bin/rtask
