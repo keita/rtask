@@ -35,6 +35,7 @@ class RTask
     @project = @gemify[:rubyforge_project]
     @package = @gemify[:name]
     @version = @gemify[:version]
+    @lib_version = config[:version]
     if config.has_key?(:use)
       list = config[:use]
       list -= config[:exclude] if config[:exclude]
@@ -88,6 +89,12 @@ class RTask
   end
 
   def real_release #:nodoc:
+    if @lib_version and @version.to_s != @lib_version.to_s
+      puts "Version confilict between the library and in .gemified"
+      puts "library: " + @lib_version.to_s
+      puts "Gemify : " + @version.to_s
+      exit
+    end
     filename = "#{@package}-#{@version}"
     gem = filename + ".gem"
     tgz = filename + ".tgz"
