@@ -8,7 +8,21 @@ RTask provides easy way to release Ruby’s gem packages. This also provides use
 
 == Usage
 
-See {the document}[http://github.com/keita/rtask/wikis].
+See {the document}[http://github.com/keita/rtask/wikis] for details.
+
+=== How to release packages
+
+First, you should setup rubyforge and gemify. Next, let's run rtask command.
+
+  % rtask -r
+
+It's all.
+
+=== How to publish API documentation
+
+  % rtask --publish
+
+It's all.
 
 == Links
 
