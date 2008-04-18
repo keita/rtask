@@ -4,24 +4,62 @@ require "rubygems"
 require "rtask"
 require "optparse"
 
-$task = RTask.new
+$task = RTask.new(:use => :all)
 
-OptionParser.new(nil, 18) do |opt|
-  opt.on("-r", "--release", "Release the packages") do
-    puts "Release"
-    $task.real_release
-    exit
+def call_task(name)
+  ARGV.clear
+  ARGV[0] = name
+  Rake.application.init
+  # This is ugly, but needed for unknown reason
+  # (filetask contains unused empty string).
+  # Please teach me if you know about it.
+  filetask = Rake.application.instance_eval{@tasks["html/index.html"]}
+  filetask.instance_eval do
+    @prerequisites.exclude("")
+  end
+  Rake.application.top_level
+  exit
+end
+
+OptionParser.new(nil, 24) do |opt|
+  opt.on("-r", "--release", RTask::MESSAGE[:release]) do
+    call_task "release"
   end
 
-  opt.on("-p", "--package", "Create gem and tgz packages") do
-    puts "Create gem and tgz packages"
-    $task.real_gem
-    $task.real_tgz
+  opt.on("-p", "--packages", RTask::MESSAGE[:packages]) do
+    call_task "packages"
+  end
+
+  opt.on("--gem", RTask::MESSAGE[:gem]) do
+    call_task "gem"
+  end
+
+  opt.on("--tgz", RTask::MESSAGE[:tgz]) do
+    call_task "tgz"
+  end
+
+  opt.on("--zip", RTask::MESSAGE[:zip]) do
+    call_task "zip"
+  end
+
+  opt.on("--rdoc", "Build the rdoc HTML Files") do
+    call_task "rdoc"
+  end
+
+  opt.on("--publish", RTask::MESSAGE[:publish]) do
+    call_task "publish"
+  end
+
+  opt.on("-c", "--clean", "Remove packages and temporary products") do
+    call_task "clean"
   end
 
   opt.on("-h", "--help", "Show this message") do
-    puts opt.help
-    exit
+    puts opt.help; exit
+  end
+
+  opt.on("-v", "--version", "Show RTask version") do
+    puts RTask::VERSION; exit
   end
 
   opt.parse!(ARGV)

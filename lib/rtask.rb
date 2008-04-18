@@ -24,7 +24,8 @@ require 'gemify'
 #   rake tgz           # Create the tgz package
 #
 class RTask
-  VERSION = "006"
+  VERSION = "007"
+  MESSAGE = Hash.new
 
   attr_reader :project, :package, :version
 
@@ -44,20 +45,46 @@ class RTask
     yield self if block_given?
   end
 
-  # Specifies to use tasks.
+  # define task
+  def self.define_task(description, rule)
+    name = rule
+    if rule.kind_of?(Hash)
+      name = rule.keys.first
+    end
+
+    MESSAGE[name] = description
+
+    define_method("register_task_#{name}") do |rtask|
+      desc description if description
+      task(rule){ rtask.send name if rtask.respond_to?(name) }
+    end
+  end
+
+  # Specifies to use tasks
   def use(*names)
     if names[0] == :all
-      names = [:clean, :rdoc, :publish, :release, :gem, :tgz]
+      names = [:clean, :rdoc, :publish, :release, :packages]
     end
     names.each do |name|
-      send(name.to_sym)
+      register = "register_task_#{name}"
+      case name
+      when :clean, :rdoc
+        send(name)
+      when :packages
+        send(register, self)
+        send("register_task_gem", self)
+        send("register_task_tgz", self)
+        send("register_task_zip", self)
+      else
+        send(register, self)
+      end
     end
   end
 
   # Task for cleaning.
   def clean
     require 'rake/clean'
-    CLEAN.include ['**/.*.sw?', '*.gem', '*.tgz', '.config', '**/.DS_Store']
+    CLEAN.include ['html', '*.gem', '*.tgz', '*.zip', '.config', '**/.DS_Store']
   end
 
   # Task for generating documents using rdoc.
@@ -66,7 +93,7 @@ class RTask
     Rake::RDocTask.new do |doc|
       doc.title = "#{@package}-#{@version} documentation"
       doc.main = "README.txt"
-      doc.rdoc_files.include("{README,History,License}.txt", "lib/**/*.rb")
+      doc.rdoc_files.include("{README,History,License}.txt", "lib/*.rb")
       doc.options << "--line-numbers" << "--inline-source" << "-c UTF-8"
       yield doc if block_given?
     end
@@ -75,20 +102,14 @@ class RTask
   # Task for uploading API documentation.
   def publish
     require 'rake/contrib/rubyforgepublisher'
-    desc "Upload API documentation"
-    task :publish => [:rdoc] do
-      pub = Rake::RubyForgePublisher.new(@project, @user["username"])
-      pub.upload
-    end
+    pub = Rake::RubyForgePublisher.new(@project, @user["username"])
+    pub.upload
   end
+
+  define_task "Upload API documentation", :publish => [:rdoc]
 
   # Task for release the package.
   def release
-    desc 'Release new gem version'
-    task :release do real_release end
-  end
-
-  def real_release #:nodoc:
     if @lib_version and @version.to_s != @lib_version.to_s
       puts "Version confilict between the library and in .gemified"
       puts "library: " + @lib_version.to_s
@@ -98,8 +119,9 @@ class RTask
     filename = "#{@package}-#{@version}"
     gem = filename + ".gem"
     tgz = filename + ".tgz"
+    zip = filename + ".zip"
     if File.exist?(gem) and File.exist?(tgz)
-      @rubyforge.add_release @project, @package, @version, gem, tgz
+      @rubyforge.add_release @project, @package, @version, gem, tgz, zip
       puts "Released #{gem} and #{tgz}"
     else
       puts "Please make gem and tgz files first: rake gem tgz"
@@ -107,24 +129,50 @@ class RTask
     end
   end
 
-  # Task for creating gem.
-  def gem
-    desc "Create the gem package"
-    task :gem do real_gem end
-  end
+  define_task 'Release new gem', :release => [:packages]
 
-  def real_gem #:nodoc:
+  # Task for creating packages
+  define_task "Create packages", :packages => [:gem, :tgz, :zip]
+
+  # Task for creating gem
+  def gem
     sh "gemify -I"
   end
 
-  # Task for creating tgz.
-  def tgz
-    desc "Create the tgz package"
-    task :tgz do real_tgz end
-  end
+  define_task "Create the gem package", :gem
 
-  def real_tgz #:nodoc:
+  # Task for creating tgz
+  def tgz
     tgz = "#{@package}-#{@version}.tgz"
     sh "tar -T Manifest.txt -c -z -f #{tgz}"
+  end
+
+  define_task "Create the tgz package", :tgz
+
+  # Task for creating zip
+  def zip
+    require "zip/zipfilesystem"
+    filename = "#{@package}-#{@version}.zip"
+    rm filename if File.exist?(filename)
+    Zip::ZipFile.open(filename, Zip::ZipFile::CREATE) do |zip|
+      manifest.each do |file|
+        zip.file.open(File.join("#{package}-#{@version}", file), "w") do |out|
+          out.write(File.open(file).read)
+        end
+      end
+    end
+  end
+
+  define_task "Create the zip package", :zip
+
+  private
+
+  def manifest
+    manifest = Dir.glob("*Manifest*", File::FNM_CASEFOLD).first
+    unless manifest
+      puts "Please make manifest"
+      exit
+    end
+    File.read(manifest).split("\n")
   end
 end
