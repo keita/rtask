@@ -1,3 +1,9 @@
+== 007: 2008-04-18
+* Keita Yamaguchi:
+  * Rewritten
+  * Supported zip package
+  * bin/rtask: added new options(--gem, --tgz, --zip, --rdoc, --publish, -c, --clean)
+
 == 006: 2008-04-12
 * Keita Yamaguchi:
   * Added version checker
