@@ -26,7 +26,7 @@ OptionParser.new(nil, 24) do |opt|
     call_task "release"
   end
 
-  opt.on("-p", "--packages", RTask::MESSAGE[:packages]) do
+  opt.on("--packages", RTask::MESSAGE[:packages]) do
     call_task "packages"
   end
 
@@ -46,7 +46,7 @@ OptionParser.new(nil, 24) do |opt|
     call_task "rdoc"
   end
 
-  opt.on("--publish", RTask::MESSAGE[:publish]) do
+  opt.on("-p", "--publish", RTask::MESSAGE[:publish]) do
     call_task "publish"
   end
 
