@@ -1,13 +1,13 @@
 --- 
 :summary: RTask provides useful Rake tasks for releasing gem packages.
 :email: keita.yamaguchi@gmail.com
-:name: rtask
 :has_rdoc: true
+:name: rtask
 :homepage: http://github.com/keita/rtask/tree/master
-:version: 008
+:version: 009
+:rubyforge_project: rtask
 :dependencies: 
 - gemify
 - rubyforge
 - rubyzip
-:rubyforge_project: rtask
 :author: Keita Yamaguchi

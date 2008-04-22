@@ -1,3 +1,7 @@
+== 009: 2008-04-22
+* Keita Yamaguchi:
+  * Fixed publish task
+
 == 008: 2008-04-21
 * Keita Yamaguchi:
   * bin/rtask: Changed -p option from --package to --publish
