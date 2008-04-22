@@ -93,7 +93,7 @@ class RTask
     Rake::RDocTask.new do |doc|
       doc.title = "#{@package}-#{@version} documentation"
       doc.main = "README.txt"
-      doc.rdoc_files.include("{README,History,License}.txt", "lib/*.rb")
+      doc.rdoc_files.include("{README,History,License}.txt", "lib/**/*.rb")
       doc.options << "--line-numbers" << "--inline-source" << "-c UTF-8"
       yield doc if block_given?
     end
