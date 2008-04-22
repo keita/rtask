@@ -1,7 +1,7 @@
 = RTask
 
 Author::    Keita Yamaguchi(山口 慶太) <keita.yamaguchi@gmail.com>
-Copyright:: © Keita Yamaguchi, 2007-2008. All rights reserved.
+Copyright:: © Keita Yamaguchi, 2008. All rights reserved.
 License::   Ruby License
 
 RTask provides easy way to release Ruby’s gem packages. This also provides useful Rake tasks for releasing packages and uploading documents.
@@ -20,9 +20,13 @@ It's all.
 
 === How to publish API documentation
 
-  % rtask --publish
+  % rtask -p
 
 It's all.
+
+=== How to clean generated files
+
+  % rtask -c
 
 == Links
 
