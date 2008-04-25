@@ -2,6 +2,7 @@
 
 require "rubygems"
 require "rtask"
+require "rtask/ui"
 require "optparse"
 
 $task = RTask.new(:use => :all)
@@ -62,5 +63,7 @@ OptionParser.new(nil, 24) do |opt|
     puts RTask::VERSION; exit
   end
 
-  opt.parse!(ARGV)
+  opt.parse(ARGV)
 end
+
+RTask::UI.start(:curses) unless ARGV.size > 0
