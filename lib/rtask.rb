@@ -31,6 +31,7 @@ class RTask
 
   def initialize(config={:use => :all})
     @rubyforge = ::RubyForge.new
+    @rubyforge.configure
     @user = @rubyforge.userconfig
     @gemify = Gemify.new.instance_eval{@settings}
     @project = @gemify[:rubyforge_project]
