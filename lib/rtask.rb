@@ -121,9 +121,9 @@ class RTask
     gem = filename + ".gem"
     tgz = filename + ".tgz"
     zip = filename + ".zip"
-    if File.exist?(gem) and File.exist?(tgz)
+    if File.exist?(gem) and File.exist?(tgz) and File.exist?(zip)
       @rubyforge.add_release @project, @package, @version, gem, tgz, zip
-      puts "Released #{gem} and #{tgz}"
+      puts "Released #{gem} and #{tgz} and #{zip}"
     else
       puts "Please make gem and tgz files first: rake gem tgz"
       exit
