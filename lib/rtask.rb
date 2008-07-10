@@ -27,16 +27,16 @@ class RTask
   VERSION = "009"
   MESSAGE = Hash.new
 
-  attr_reader :project, :package, :version
+  attr_reader :spec, :project, :package, :version
 
   def initialize(config={:use => :all})
+    @spec = init_spec
     @rubyforge = ::RubyForge.new
     @rubyforge.configure
     @user = @rubyforge.userconfig
-    @gemify = Gemify.new.instance_eval{@settings}
-    @project = @gemify[:rubyforge_project]
-    @package = @gemify[:name]
-    @version = @gemify[:version]
+    @project = @spec.rubyforge_project
+    @package = @spec.name
+    @version = @spec.version
     @lib_version = config[:version]
     if config.has_key?(:use)
       list = config[:use]
@@ -44,6 +44,37 @@ class RTask
       use(*config[:use])
     end
     yield self if block_given?
+  end
+
+  # Initialize gem specification.
+  def init_spec
+    # if .rtask exists
+    if File.exist?(".rtask")
+      return YAML.load(File.read(".rtask"))
+    end
+
+    # if gemspec exists
+    Dir.glob("*.gemspec") do |spec|
+      return RTask::Spec.new(Gem::Specification.load(spec))
+    end
+
+    # if .gemified exists
+    if File.exist?(".gemified")
+      data = YAML.load(File.read(".gemified"))
+      spec = Gem::Specification.new
+      spec.summary = data["summary"]
+      spec.email = data["email"]
+      spec.name = data["name"]
+      spec.homepage = data["homepage"]
+      spec.version = data["version"]
+      spec.rubyforge_project = data["rubyforge_project"]
+      #spec.dependencies = data["dependencies"]
+      spec.authors << data["author"]
+      return RTask::Spec.new(spec)
+    end
+
+    # no specification
+    return RTask::Spec.new
   end
 
   # define task
@@ -177,3 +208,5 @@ class RTask
     File.read(manifest).split("\n")
   end
 end
+
+require "rtask/spec"
