@@ -1,6 +1,5 @@
 require 'rake'
 require 'rubyforge'
-require 'gemify'
 
 # == Usage
 # First, you setup gemify.
