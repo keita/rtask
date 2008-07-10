@@ -1,3 +1,11 @@
+== 010: 2008-07-10
+* yhara:
+  * patch for new rubyforge(1.0.0) interface
+  * check to exist zip file
+* Keita Yamaguchi:
+  * added gem editor(curses version)
+  * removed gemify dependency
+
 == 009: 2008-04-22
 * Keita Yamaguchi:
   * Fixed publish task
