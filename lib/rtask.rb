@@ -58,14 +58,14 @@ class RTask
     if File.exist?(".gemified")
       data = YAML.load(File.read(".gemified"))
       spec = ::Gem::Specification.new
-      spec.summary = data["summary"]
-      spec.email = data["email"]
-      spec.name = data["name"]
-      spec.homepage = data["homepage"]
-      spec.version = data["version"]
-      spec.rubyforge_project = data["rubyforge_project"]
-      spec.dependencies = data["dependencies"]
-      spec.authors << data["author"]
+      spec.summary = data[:summary]
+      spec.email = data[:email]
+      spec.name = data[:name]
+      spec.homepage = data[:homepage]
+      spec.version = data[:version]
+      spec.rubyforge_project = data[:rubyforge_project]
+      spec.dependencies += data[:dependencies]
+      spec.authors << data[:author]
       return RTask::Spec.new(spec)
     end
 
