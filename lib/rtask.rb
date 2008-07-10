@@ -1,11 +1,8 @@
 require 'rake'
 require 'rubyforge'
 
-# == Usage
-# First, you setup gemify.
-#   % gemify
-#
-# Second, add RTask in your Rakefile:
+# == Usage for Rake users
+# RTask in your Rakefile:
 #   require 'rubygems'
 #   require 'rtask'
 #   RTask.new
