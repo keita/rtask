@@ -1,8 +1,8 @@
 require "delegate"
 
 class RTask
-  class Spec < DelegateClass(Gem::Specification)
-    def initialize(gem_spec = Gem::Specification.new)
+  class Spec < DelegateClass(::Gem::Specification)
+    def initialize(gem_spec = ::Gem::Specification.new)
       super(gem_spec)
     end
 
@@ -22,13 +22,13 @@ class RTask
     end
 
     def required
-      Gem::Specification.attribute_names.each do |name|
-        Gem::Specification.required_attribute?()
+      ::Gem::Specification.attribute_names.each do |name|
+        ::Gem::Specification.required_attribute?()
       end
     end
 
     def array
-      Gem::Specification.array_attributes
+      ::Gem::Specification.array_attributes
     end
 
     def type_of(name)
