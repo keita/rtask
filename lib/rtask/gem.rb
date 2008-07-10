@@ -1,4 +1,4 @@
-module RTask
+class RTask
   module Gem
     def self.build(spec)
       ::Gem::Builder.new(spec).build
