@@ -66,4 +66,4 @@ OptionParser.new(nil, 24) do |opt|
   opt.parse(ARGV)
 end
 
-RTask::UI.start(:curses) unless ARGV.size > 0
+RTask::UI.start($task, :curses) unless ARGV.size > 0
