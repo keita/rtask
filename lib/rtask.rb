@@ -164,7 +164,7 @@ class RTask
 
   # Task for creating gem
   def gem
-    sh "gemify -I"
+    Gem.build(@spec)
   end
 
   define_task "Create the gem package", :gem
@@ -206,3 +206,4 @@ class RTask
 end
 
 require "rtask/spec"
+require "rtask/gem"
