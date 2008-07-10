@@ -31,6 +31,7 @@ class RTask
 
   def initialize(config={:use => :all})
     @rubyforge = ::RubyForge.new
+    @rubyforge.configure
     @user = @rubyforge.userconfig
     @gemify = Gemify.new.instance_eval{@settings}
     @project = @gemify[:rubyforge_project]
@@ -120,7 +121,7 @@ class RTask
     gem = filename + ".gem"
     tgz = filename + ".tgz"
     zip = filename + ".zip"
-    if File.exist?(gem) and File.exist?(tgz)
+    if File.exist?(gem) and File.exist?(tgz) and File.exist?(zip)
       @rubyforge.add_release @project, @package, @version, gem, tgz, zip
       puts "Released #{gem}, #{tgz}, and #{zip}"
     else
