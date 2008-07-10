@@ -64,7 +64,10 @@ class RTask
       spec.homepage = data[:homepage]
       spec.version = data[:version]
       spec.rubyforge_project = data[:rubyforge_project]
-      spec.dependencies += data[:dependencies]
+      # assume gemify's "dependencies" are runtime dependencies
+      data[:dependencies].each do |dep|
+        spec.add_runtime_dependency dep
+      end
       spec.authors << data[:author]
       return RTask::Spec.new(spec)
     end
