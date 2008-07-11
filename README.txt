@@ -4,7 +4,7 @@ Author::    Keita Yamaguchi(山口 慶太) <keita.yamaguchi@gmail.com>
 Copyright:: © Keita Yamaguchi, 2008. All rights reserved.
 License::   Ruby License
 
-RTask provides easy way to release Ruby’s gem packages. This also provides useful Rake tasks for releasing packages and uploading documents.
+RTask provides easy way to release RubyGems packages. This also provides useful Rake tasks for releasing packages and uploading documents.
 
 == Usage
 
