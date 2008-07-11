@@ -27,6 +27,7 @@ class RTask
 
   def initialize(config={:use => :all})
     @spec = init_spec
+    @spec.files = manifest
     @rubyforge = ::RubyForge.new
     @rubyforge.configure
     @user = @rubyforge.userconfig
@@ -199,7 +200,7 @@ class RTask
   private
 
   def manifest
-    manifest = Dir.glob("*Manifest*", File::FNM_CASEFOLD).first
+    manifest = Dir.glob("*manifest*", File::FNM_CASEFOLD).first
     unless manifest
       puts "Please make manifest"
       exit
