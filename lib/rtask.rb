@@ -68,7 +68,7 @@ class RTask
       # assume gemify's "dependencies" are runtime dependencies
       data[:dependencies].each do |dep|
         spec.add_runtime_dependency dep
-      end
+      end if data[:dependencies]
       spec.authors << data[:author]
       return RTask::Spec.new(spec)
     end
