@@ -36,6 +36,10 @@ It's all.
 
   % rtask -c
 
+== Contributers
+
+* yhara(http://github.com/yhara)
+
 == Links
 
 * RTask
