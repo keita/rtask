@@ -4,4 +4,9 @@ License.txt
 Rakefile
 bin/rtask
 lib/rtask.rb
+lib/rtask/gem.rb
+lib/rtask/spec.rb
+lib/rtask/ui.rb
+lib/rtask/ui/curses.rb
+rtask.gemspec
 setup.rb
