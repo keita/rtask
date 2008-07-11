@@ -90,7 +90,6 @@ module RTask::UI
       def input(msg, val = "")
         clear
         setpos(0, 0)
-        addstr("> #{msg}: ")
         refresh
 
         # setup io config
@@ -100,7 +99,7 @@ module RTask::UI
 
         # read
         Readline::HISTORY << val.to_s
-        res = Readline.readline
+        res = Readline.readline("> #{msg}: ")
 
         # restore io config
         tio.lflag &= ~Termios::ECHO
@@ -164,7 +163,6 @@ module RTask::UI
           when ?d, ::Curses::KEY_DOWN   ; down
           when ?c, ::Curses::KEY_CTRL_J ; change
           when ?b; build_gem
-          when ?g; gemspec
           when ?s; save
           when ?i; IncludedFiles.new(parent.files)
           when ?q; quit
@@ -241,14 +239,19 @@ Changes are not saved. Quit? (y or n)
         val = parent.spec.send(name)
         res = case @spec.type_of(name)
               when :array
-                msg = "#{name.to_s.capitalize}(Split by ';')"
-                res = (parent.input msg, val).strip.split(";")
+                msg = "#{name.to_s.capitalize}(Split by ',')"
+                (parent.input msg, val.join(",")).strip.split(",")
               when :bool
                 !val
               when :string
                 parent.input name.to_s.capitalize, val
               end
-        parent.spec.send("#{name}=", res)
+        if name == :dependencies
+          parent.spec.dependencies.clear
+          res.each {|dep| parent.spec.add_runtime_dependency dep}
+        else
+          parent.spec.send("#{name}=", res)
+        end
         parent.message "Updated '#{name}'"
         @changed = true
       end
@@ -272,7 +275,12 @@ Changes are not saved. Quit? (y or n)
         addstr " ".rjust(@key_width - key_width + 1)
 
         # value
-        addstr(val.inspect) unless val.nil?
+        case val
+        when Array
+          addstr val.join(", ")
+        else
+          addstr val.to_s
+        end unless val.nil?
 
         attroff(highlight ? ::Curses::A_UNDERLINE : 0)
       end
