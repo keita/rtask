@@ -20,7 +20,7 @@ require 'rubyforge'
 #   rake tgz           # Create the tgz package
 #
 class RTask
-  VERSION = "009"
+  VERSION = "010"
   MESSAGE = Hash.new
 
   attr_reader :spec, :project, :package, :version
