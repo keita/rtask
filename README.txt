@@ -36,7 +36,7 @@ It's all.
 
   % rtask -c
 
-== Contributers
+== Contributors
 
 * yhara(http://github.com/yhara)
 
