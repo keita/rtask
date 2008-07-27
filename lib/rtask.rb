@@ -176,7 +176,7 @@ class RTask
   # Task for creating tgz
   def tgz
     tgz = "#{@package}-#{@version}.tgz"
-    sh "tar -T Manifest.txt -c -z -f #{tgz}"
+    sh "tar -T #{manifest_filename} -c -z -f #{tgz}"
   end
 
   define_task "Create the tgz package", :tgz
@@ -200,12 +200,15 @@ class RTask
   private
 
   def manifest
-    manifest = Dir.glob("*manifest*", File::FNM_CASEFOLD).first
-    unless manifest
+    unless manifest_filename
       puts "Please make manifest"
       exit
     end
-    File.read(manifest).split("\n")
+    File.read(manifest_filename).split("\n")
+  end
+
+  def manifest_filename
+    Dir.glob("*manifest*", File::FNM_CASEFOLD).first
   end
 end
 
